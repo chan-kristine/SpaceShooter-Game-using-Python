@@ -1,4 +1,3 @@
-import faulthandler
 import pygame
 import os
 import time
@@ -39,6 +38,12 @@ class Ship:
         
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
+        
+    def get_width(self):
+        return self.ship_img.get_width()
+
+    def get_height(self):
+        return self.ship_img.get_height()
         
 class Player(Ship):
     def __init__(self, x, y, health=100):
@@ -91,7 +96,7 @@ def main():
             player.x -= player_vel
         if keys[pygame.K_w] and player.y - player_vel > 0: #up
             player.x -= player_vel
-        if keys[pygame.K_s] and player.y + player_vel + ship.get_height() + 15 < HEIGHT: #down
+        if keys[pygame.K_s] and player.y + player_vel + player.get_height() + 15 < HEIGHT: #down
             player.x -= player_vel
         if keys[pygame.K_SPACE]:
             player.shoot()
