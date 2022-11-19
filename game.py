@@ -79,7 +79,7 @@ class Ship:
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x-20, self.y, self.laser_img)
+            laser = Laser(self.x, self.y, self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
@@ -109,6 +109,10 @@ class Player(Ship):
                         objs.remove(obj)
                         if laser in self.lasers:
                             self.lasers.remove(laser)
+                            
+    def healthbar(self, window):
+        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
+        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
         
 class Enemy(Ship):
     COLOR_MAP = {
@@ -124,6 +128,12 @@ class Enemy(Ship):
         
     def move(self, vel):
         self.y += vel
+        
+    def shoot(self):
+        if self.cool_down_counter == 0:
+            laser = Laser(self.x-20, self.y, self.laser_img)
+            self.lasers.append(laser)
+            self.cool_down_counter = 1
 
 
 def collide(obj1, obj2):
@@ -146,6 +156,8 @@ def main():
     enemy_vel = 1
     
     player_vel = 5
+    laser_vel = 5
+
     
     player = Player(300, 630)
 
