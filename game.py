@@ -6,7 +6,7 @@ import random
 # Set up pygame window
 WIDTH, HEIGHT = 750, 740
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-
+pygame.display.set_caption("Aleja's Space Shooter")
 
 # Load Images
 RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
