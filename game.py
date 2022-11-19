@@ -3,6 +3,11 @@ import os
 import time
 import random
 
+# Set up pygame window
+WIDTH, HEIGHT = 750, 740
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+
+
 # Load Images
 RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
 GREEN_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
