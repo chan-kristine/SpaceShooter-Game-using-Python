@@ -25,7 +25,7 @@ YELLOW_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"
 
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
- 
+
 class Ship:
     def __init__(self, x, y, health=100):    
         self.x = x
@@ -77,6 +77,7 @@ def main():
     Level = 1
     Lives = 5
     main_font = pygame.font.SysFont ("comicsans", 30)
+    lost_font = pygame.font.SysFont("comicsans", 60)
     
     enemies = []
     wave_length = 5
@@ -84,10 +85,12 @@ def main():
     
     player_vel = 5
     
-    player = Player(300, 650)
-    
-    ship = Ship (300, 650)
-    clock = pygame.time.Clock
+    player = Player(300, 630)
+
+    clock = pygame.time.Clock()
+
+    lost = False
+    lost_count = 0
    
     def redraw_window():
         WIN.blit (BG,(0,0))
@@ -104,12 +107,25 @@ def main():
             
         player.draw(WIN)
         
+        if lost:
+            lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
+            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
    
         pygame.display.update()
         
     while run:
         clock.tick(FPS)
         redraw_window()
+        
+        if Lives <= 0 or player.health <= 0:
+            lost = True
+            lost_count += 1
+            
+        if lost:
+            if lost_count > FPS * 3:
+                run = False
+            else:
+                continue
         
         if len(enemies) == 0:
             level += 1
@@ -125,7 +141,7 @@ def main():
         keys= pygame.key.get_pressed()
         if keys[pygame.K_a] and player.x - player_vel > 0: #left
             player.x -= player_vel
-        if keys[pygame.K_d] and ship.x + player_vel + player.get_width() < WIDTH: #right
+        if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH: #right
             player.x -= player_vel
         if keys[pygame.K_w] and player.y - player_vel > 0: #up
             player.x -= player_vel
@@ -136,8 +152,6 @@ def main():
 
         for enemy in enemies[:]:
             enemy.move(enemy_vel)
-            
-
-
-        
+            if enemy.y + enemy.get_height() > HEIGHT:
+                
 main()
